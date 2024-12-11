@@ -46,6 +46,9 @@ def cnpgrid(g, i, j):
 def cvnpgrid(g, i, j, v):
     return cnpgrid(g, i, j) and g[i][j] == v
 
+
+
+
 def pnpgrid(g):
     for i in range(g.shape[0]):
         for j in range(g.shape[1]):
@@ -61,14 +64,25 @@ def enpgrid(g):
         for j in range(g.shape[1]):
             yield i, j
 
-def tqdm_enpgrid(g):
-    return tqdm(enpgrid(g), total=g.shape[0]*g.shape[1])
-
 def fnpgrid(g, x):
+    f = []
     for i, j in enpgrid(g):
         if g[i][j] == x:
-            return i, j
-    return None
+            f.append((i, j))
+    return f
+
+def lnpgrid(g, l):
+    f = l
+    if not isinstance(l, type(lambda x:x)):
+        if list == type(l):
+            f = lambda x : x in l
+        else:
+            f = lambda x: x == l
+    for i in range(g.shape[0]):
+        for j in range(g.shape[1]):
+            if f(g[i][j]):
+                yield i, j
+
 
 def print_grid(g):
     print("="*g.shape[1])
@@ -78,3 +92,14 @@ def print_grid(g):
         print()
     print("="*g.shape[1])
 
+def tqdm_enpgrid(g):
+    return tqdm(enpgrid(g), total=g.shape[0] * g.shape[1])
+
+def tqdm_pnpgrid(g):
+    return tqdm(pnpgrid(g), total=g.shape[0] * g.shape[1])
+
+def tqdm_penpgrid(g):
+    return tqdm(penpgrid(g), total=g.shape[0] * g.shape[1])
+
+def tqdm_lnpgrid(g, l):
+    return tqdm(lnpgrid(g, l), total=g.shape[0] * g.shape[1])
