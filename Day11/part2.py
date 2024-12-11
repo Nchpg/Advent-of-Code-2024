@@ -1,14 +1,23 @@
-from functools import lru_cache
+cache = {}
 
-@lru_cache(maxsize=None)
 def rec(stone, depth):
     if depth >= 75:
         return 1
+    if (stone, depth) in cache:
+        return cache[(stone, depth)]
     if stone == 0:
-        return rec(1, depth + 1)
+        cache[(stone, depth)] = rec(1, depth + 1)
+        return cache[(stone, depth)]
     elif len(str(stone)) % 2 == 0:
-        return rec(int(str(stone)[:int(len(str(stone)) / 2)]), depth+1) + rec(int(str(stone)[int(len(str(stone)) / 2):]), depth + 1)
-    return rec(stone*2024, depth+1)
+        li = int(str(stone)[:int(len(str(stone)) / 2)])
+        ri = int(str(stone)[int(len(str(stone)) / 2):])
+        l = rec(li, depth + 1)
+        r = rec(ri, depth + 1)
+        cache[(stone, depth)] = l + r
+        return cache[(stone, depth)]
+    cache[(stone, depth)] = rec(stone*2024, depth+1)
+    return cache[stone, depth]
+
 
 
 """
