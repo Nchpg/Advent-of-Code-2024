@@ -3,7 +3,7 @@ from AOC2024.aoc_tools import *
 REF_RES = 480
 
 def compute(price):
-    A = np.array([[price[0], price[3]], [price[1], price[3]]]).transpose()
+    A = np.array([[price[0], price[1]], [price[2], price[3]]]).transpose()
     Y = np.array([price[4], price[5]]).transpose()
     X = linear_solve(A, Y).transpose()
     x, y = [round(e) for e in X]
