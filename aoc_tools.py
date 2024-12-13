@@ -13,6 +13,8 @@ def d_tr(dx, dy):
 def g_tr(dx, dy):
     return dy, -dx
 
+def change_line_delim(lines, d):
+    return ("\n".join(lines)).split(d)
 
 def nums(line):
     return [int(num) for num in re.findall(r'\d+', line)]
