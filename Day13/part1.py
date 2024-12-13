@@ -1,17 +1,15 @@
-import numpy as np
-
 from AOC2024.aoc_tools import *
 
 REF_RES = 480
 
-def compute(A, B, T):
-    L = np.array([A, B]).transpose()
-    Y = np.array([T]).transpose()
-    X = linear_solve(L, Y).transpose()
-    x, y = [round(e) for e in X[0]]
+def compute(price):
+    A = np.array([[price[0], price[3]], [price[1], price[3]]]).transpose()
+    Y = np.array([price[4], price[5]]).transpose()
+    X = linear_solve(A, Y).transpose()
+    x, y = [round(e) for e in X]
     if x  > 100 or y > 100:
         return 0
-    if A[0] * x + B[0] * y == T[0] and A[1] * x + B[1] * y == T[1]:
+    if A[0][0] * x + A[0][1] * y == Y[0] and A[1][0] * x + A[1][1] * y == Y[1]:
         return 3 * x + y
     return 0
 
@@ -19,30 +17,7 @@ def compute(A, B, T):
 START FUNCTION TO SOLVE THE PROBLEM
 """
 def manager(lines):
-    t = 0
-    A = []
-    B = []
-    T = []
-    i = 0
-    for line in lines:
-        if line == "":
-            t += compute(A, B, T)
-            i = 0
-            continue
-        if i == 0:
-            R = re.findall("X\+(\d+), Y\+(\d+)", line)
-            A = [int(R[0][0]), int(R[0][1])]
-            i += 1
-        elif i == 1:
-            R = re.findall("X\+(\d+), Y\+(\d+)", line)
-            B = [int(R[0][0]), int(R[0][1])]
-            i += 1
-        elif i == 2:
-            R = re.findall("X=(\d+), Y=(\d+)", line)
-            T = [int(R[0][0]), int(R[0][1])]
-            i += 1
-    t += compute(A, B, T)
-    return t
+    return sum([compute(price) for price in lnums(change_line_delim(lines, "\n\n"))])
 
 
 
