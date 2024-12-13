@@ -3,11 +3,13 @@ from AOC2024.aoc_tools import *
 REF_RES = 875318608908
 
 def compute(A, B, T):
-    T = [T[0] + 10000000000000, T[1] + 10000000000000]
-    y = ((T[1]/B[1])-A[1]*T[0]/(A[0]*B[1]))/(1 - A[1]*B[0]/(A[0]*B[1]))
-    x = (T[0] - B[0]*y)/A[0]
-    if abs(x-round(x)) < 0.001 and abs(y-round(y)) < 0.001:
-        return int(3*round(x)+round(y))
+    T = [x + 10000000000000 for x in T]
+    L = np.array([A, B]).transpose()
+    Y = np.array([T]).transpose()
+    X = linear_solve(L, Y).transpose()
+    x, y = [round(e) for e in X[0]]
+    if A[0] * x + B[0] * y == T[0] and A[1] * x + B[1] * y == T[1]:
+        return 3 * x + y
     return 0
 
 """

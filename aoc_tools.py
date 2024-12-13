@@ -13,8 +13,12 @@ def d_tr(dx, dy):
 def g_tr(dx, dy):
     return dy, -dx
 
+
 def nums(line):
     return [int(num) for num in re.findall(r'\d+', line)]
+
+def lnums(lines):
+    return [nums(l) for l in lines]
 
 #Parse line into list of type t by delimiter d
 def pl(l, d="", t=int):
@@ -103,3 +107,14 @@ def tqdm_penpgrid(g):
 
 def tqdm_lnpgrid(g, l):
     return tqdm(lnpgrid(g, l), total=g.shape[0] * g.shape[1])
+
+def linear_solve(A, Y):
+    if A.shape[0] != A.shape[1]:
+        raise ValueError("Matrix A must be square (number of rows must equal number of columns).")
+    if A.shape[0] != Y.shape[0]:
+        raise ValueError("The number of rows in A must match the number of rows in Y.")
+    try:
+        X = np.linalg.solve(A, Y)
+        return X
+    except np.linalg.LinAlgError as e:
+        raise np.linalg.LinAlgError(f"Matrix A is singular or not invertible: {e}")

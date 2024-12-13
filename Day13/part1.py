@@ -1,14 +1,18 @@
+import numpy as np
+
 from AOC2024.aoc_tools import *
 
 REF_RES = 480
 
 def compute(A, B, T):
-    y = ((T[1]/B[1])-A[1]*T[0]/(A[0]*B[1]))/(1 - A[1]*B[0]/(A[0]*B[1]))
-    x = (T[0] - B[0]*y)/A[0]
-    if x > 100 or y > 100:
+    L = np.array([A, B]).transpose()
+    Y = np.array([T]).transpose()
+    X = linear_solve(L, Y).transpose()
+    x, y = [round(e) for e in X[0]]
+    if x  > 100 or y > 100:
         return 0
-    if abs(x-round(x)) < 0.001 and abs(y-round(y)) < 0.001:
-        return int(3*round(x)+round(y))
+    if A[0] * x + B[0] * y == T[0] and A[1] * x + B[1] * y == T[1]:
+        return 3 * x + y
     return 0
 
 """
