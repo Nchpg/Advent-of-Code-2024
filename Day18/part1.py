@@ -17,14 +17,8 @@ def manager(lines):
     for x, y in l[:1024]:
         g[y][x] = '#'
 
-    i, j = 0, 0
     c = np.zeros((d, d))
-    q = deque()
-    for di, dj in cross:
-        if cnpgrid(g, i+di, j+dj) and g[j+dj][i+di] == '.':
-            if c[j+dj][i+di] == 0 or c[j+dj][i+di] > c[j][i] + 1:
-                c[j+dj][i+di] = c[j][i] + 1
-                q.append((i+di, j+dj))
+    q = deque([(0, 0)])
     while q:
         i , j = q.popleft()
         for di, dj in cross:
