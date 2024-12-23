@@ -7,7 +7,7 @@ START FUNCTION TO SOLVE THE PROBLEM
 """
 def manager(lines):
 
-    l = [re.findall("([a-z]+)-([a-z]+)", line)[0] for line in lines]
+    l = re.findall("([a-z]+)-([a-z]+)", "\n".join(lines))
 
     d = defaultdict(list)
     for (p1, p2) in l:
@@ -22,12 +22,10 @@ def manager(lines):
                 v = set(d[p])
                 z = list(u.intersection(v))
                 t = [k, p]
-                i = 0
-                while len(z):
-                    t.append(z[i])
-                    z = list(set(z).intersection(set(d[z[i]])))
-                t = tuple(t)
-                team.add(t)
+                while z:
+                    t.append(z[0])
+                    z = list(set(z).intersection(set(d[z[0]])))
+                team.add(tuple(t))
 
     m = 0
     r = ()

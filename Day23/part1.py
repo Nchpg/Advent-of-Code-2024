@@ -9,7 +9,7 @@ START FUNCTION TO SOLVE THE PROBLEM
 """
 def manager(lines):
 
-    l = [re.findall("([a-z]+)-([a-z]+)", line)[0] for line in lines]
+    l = re.findall("([a-z]+)-([a-z]+)", "\n".join(lines))
 
     d = defaultdict(list)
     for (p1, p2) in l:
@@ -19,14 +19,10 @@ def manager(lines):
     seen = set()
     team = set()
     for k, v in d.items():
-        u = set()
-        for x in v:
-            u.add(x)
+        u = set(v)
         for p in v:
             if k in d[p]:
-                v = set()
-                for x in d[p]:
-                    v.add(x)
+                v = set(d[p])
                 z = list(u.intersection(v))
                 for i in range(len(z)):
                     if (z[i], k, p) not in seen:
